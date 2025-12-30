@@ -3,7 +3,9 @@
   "package": "io.github.candycalc.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "ClientPlayNetworkHandlerMixin"
+    "ClientPlayNetworkHandlerMixin",
+    "DrawContextMixin",
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
