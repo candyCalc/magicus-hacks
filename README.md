@@ -4,7 +4,8 @@
 
 ## Known Issues
 - Not all abilities have activate the cooldown. (I am not sure if all abilities are possible to detect client-side)
-- Staves do not activate cooldowns (Staves work differently and will need extra attention)
+- Staves do not activate cooldowns. (Staves work differently and will need extra attention)
+- Cooldowns are broken in the Nether.
 
 ## Future Plans
 - REI support. I want REI support sooo bad.
