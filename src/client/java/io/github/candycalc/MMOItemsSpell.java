@@ -32,7 +32,7 @@ public class MMOItemsSpell {
     }
 
     public String getMode() {
-        return  mode;
+        return mode;
     }
 
     public double getCooldown() {

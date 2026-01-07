@@ -16,8 +16,9 @@ public class MinecraftClientMixin {
         PlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null && player.isSneaking()) {
             MagicusHackClientClient.castMMOSpell("SHIFT_RIGHT_CLICK");
+        } else {
+            MagicusHackClientClient.castMMOSpell("RIGHT_CLICK");
         }
-        MagicusHackClientClient.castMMOSpell("RIGHT_CLICK");
     }
 
     @Inject(method = "doAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/hit/HitResult;getType()Lnet/minecraft/util/hit/HitResult$Type;"))

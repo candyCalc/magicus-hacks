@@ -1,5 +1,6 @@
 package io.github.candycalc;
 
+import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
@@ -28,13 +29,13 @@ public class MagicusHackClientClient implements ClientModInitializer {
 		cooldowns.put(itemId, thing);
 	}
 
-	public static double getCooldown(String itemId) {
-		double cooldownPercent = 0d;
+	public static double getCooldown(String itemId, String spellId) {
 		if (cooldowns.containsKey(itemId)) {
 			for (MMOItemsSpell spell : cooldowns.get(itemId)) {
-				cooldownPercent = Math.max(cooldownPercent, spell.getCooldownPercent());
+				if (spell.getId().equals(spellId)) {
+					return spell.getCooldownPercent();
+				}
 			}
-			return cooldownPercent;
 		}
 		return 1d;
 	}
@@ -43,13 +44,13 @@ public class MagicusHackClientClient implements ClientModInitializer {
 		PlayerEntity player = MinecraftClient.getInstance().player;
 		if (player != null) {
 			for (ItemStack stack : player.getHandItems()) {
-				List<MMOItemsSpell> spells = MMOItemsSpell.getSpells(stack);
-				for (MMOItemsSpell spell : spells) {
-					if (spell.getMode().equals(mode) && getCooldown(getOraxenId(stack)) > 0.99999d) {
+				for (MMOItemsSpell spell : MMOItemsSpell.getSpells(stack)) {
+					if (spell.getMode().equals(mode) && getCooldown(getOraxenId(stack), spell.getId()) > 0.99999d) {
 						setCooldown(
 								getOraxenId(stack),
 								spell
 						);
+						LogUtils.getLogger().info("spell {} was cast using {}", spell.getId(), spell.getMode());
 					}
 				}
 			}
