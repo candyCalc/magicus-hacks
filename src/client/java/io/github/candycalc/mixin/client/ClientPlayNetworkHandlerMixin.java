@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayNetworkHandlerMixin {
-    @Inject(method = "onOpenScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreens;open(Lnet/minecraft/screen/ScreenHandlerType;Lnet/minecraft/client/MinecraftClient;ILnet/minecraft/text/Text;)V"))
+    @Inject(method = "onOpenScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreens;open(Lnet/minecraft/screen/ScreenHandlerType;Lnet/minecraft/client/MinecraftClient;ILnet/minecraft/text/Text;)V"), cancellable = true)
     private void fuckOffEnchantingTableMenu(OpenScreenS2CPacket packet, CallbackInfo ci) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         // If the server tells you to open the enchantment table menu, but you're holding a glass bottle: refuse.
@@ -22,6 +22,7 @@ public class ClientPlayNetworkHandlerMixin {
             player.getInventory().remove(ItemStack -> ItemStack.isOf(Items.GLASS_BOTTLE), 1, player.getInventory());
             player.getInventory().insertStack(Items.EXPERIENCE_BOTTLE.getDefaultStack());
             player.closeHandledScreen();
+            ci.cancel();
         }
     }
 }
